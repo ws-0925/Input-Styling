@@ -1,0 +1,700 @@
+/*
+=====
+HELPERS
+=====
+*/
+.ha-screen-reader{
+    width: var(--ha-screen-reader-width, 1px);
+    height: var(--ha-screen-reader-height, 1px);
+    padding: var(--ha-screen-reader-padding, 0);
+    border: var(--ha-screen-reader-border, none);
+  
+    position: var(--ha-screen-reader-position, absolute);
+    clip: var(--ha-screen-reader-clip, rect(1px, 1px, 1px, 1px));
+    overflow: var(--ha-screen-reader-overflow, hidden);
+  }
+  
+  /*
+  =====
+  RESET STYLES
+  =====
+  */
+  
+  .field__input{ 
+    --uiFieldPlaceholderColor: var(--fieldPlaceholderColor, #767676);
+    
+    background-color: transparent;
+    border-radius: 0;
+    border: none;
+  
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  
+    font-family: inherit;
+    font-size: inherit;
+  }
+  
+  .field__input:focus::-webkit-input-placeholder{
+    color: var(--uiFieldPlaceholderColor);
+  }
+  
+  .field__input:focus::-moz-placeholder{
+    color: var(--uiFieldPlaceholderColor);
+  }
+  
+  /*
+  =====
+  CORE STYLES
+  =====
+  */
+  
+  .field{
+    --uiFieldBorderWidth: var(--fieldBorderWidth, 2px);
+    --uiFieldPaddingRight: var(--fieldPaddingRight, 1rem);
+    --uiFieldPaddingLeft: var(--fieldPaddingLeft, 1rem);   
+    --uiFieldBorderColorActive: var(--fieldBorderColorActive, rgba(22, 22, 22, 1));
+  
+    display: var(--fieldDisplay, inline-flex);
+    position: relative;
+    font-size: var(--fieldFontSize, 1rem);
+  }
+  
+  .field__input{
+    box-sizing: border-box;
+    width: var(--fieldWidth, 100%);
+    height: var(--fieldHeight, 52px);
+    padding: var(--fieldPaddingTop, 1.25rem) var(--uiFieldPaddingRight) var(--fieldPaddingBottom, 1.25rem) var(--uiFieldPaddingLeft,1.25rem);
+    border: var(--uiFieldBorderWidth) solid var(--fieldBorderColor, rgba(0, 0, 0, .25));  
+  }
+  
+  .field__input:focus{
+    outline: none;
+  }
+  
+  .field__input::-webkit-input-placeholder{
+    opacity: 0;
+    transition: opacity .2s ease-out;
+  }
+  
+  .field__input::-moz-placeholder{
+    opacity: 0;
+    transition: opacity .2s ease-out;
+  }
+  
+  .field__input:focus::-webkit-input-placeholder{
+    opacity: 1;
+    transition-delay: .2s;
+  }
+  
+  .field__input:focus::-moz-placeholder{
+    opacity: 1;
+    transition-delay: .2s;
+  }
+  
+  .field__label-wrap{
+    box-sizing: border-box;
+    pointer-events: none;
+    cursor: text;
+  
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+  
+  .field__label-wrap::after{
+    content: "";
+    box-sizing: border-box;
+    width: 100%;
+    height: 0;
+    opacity: 0;
+  
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+  
+  .field__input:focus ~ .field__label-wrap::after{
+    opacity: 1;
+  }
+  
+  .field__label{
+    position: absolute;
+    left: var(--uiFieldPaddingLeft);
+    top: calc(50% - .5em);
+  
+    line-height: 1;
+    font-size: var(--fieldHintFontSize, inherit);
+  
+    transition: top .2s cubic-bezier(0.9, -0.15, 0.1, 1.15), opacity .2s ease-out, font-size .2s ease-out;
+  }
+  
+  .field__input:focus ~ .field__label-wrap .field__label,
+  .field__input:not(:placeholder-shown) ~ .field__label-wrap .field__label{
+    /*--fieldHintFontSize: var(--fieldHintFontSizeFocused, .75rem);
+  
+    top: var(--fieldHintTopHover, .25rem);*/
+  }
+  
+  /* 
+  effect 1
+  */
+  
+  .field_v1 .field__label-wrap::after{
+    border-bottom: var(--uiFieldBorderWidth) solid var(--uiFieldBorderColorActive);
+    transition: opacity .2s ease-out;
+  }
+  
+  /* 
+  effect 2
+  */
+  
+  .field_v2 .field__label-wrap{
+    overflow: hidden;
+  }
+  
+  .field_v2 .field__label-wrap::after{
+    border-bottom: var(--uiFieldBorderWidth) solid var(--uiFieldBorderColorActive);
+    transform: translate3d(-105%, 0, 0);
+    transition: transform .285s ease-out .2s, opacity .2s ease-out .2s;
+  }
+  
+  .field_v2 .field__input:focus ~ .field__label-wrap::after{
+    transform: translate3d(0, 0, 0);
+    transition-delay: 0;
+  }
+  
+  /*
+  effect 3
+  */
+  
+  .field_v3 .field__label-wrap::after{
+    border: var(--uiFieldBorderWidth) solid var(--uiFieldBorderColorActive);
+    /*transition: height .2s ease-out, opacity .2s ease-out;*/
+  }
+  
+  .field_v3 .field__input:focus ~ .field__label-wrap::after{
+    height: 100%;
+  }
+  
+  /*
+  =====
+  LEVEL 4. SETTINGS
+  =====
+  */
+  
+  .field{
+    --fieldBorderColor: #D1C4E9;
+    --fieldBorderColorActive: #673AB7;
+  }
+  
+  /*
+  =====
+  DEMO
+  =====
+  */
+  
+  body{
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Open Sans, Ubuntu, Fira Sans, Helvetica Neue, sans-serif;
+    margin: 0;
+  
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .page{
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 320px;
+    margin: auto;  
+    display: grid;
+    grid-gap: 30px;
+  }
+  
+  .linktr{
+    order: -1;
+    padding: 1.75rem;
+    text-align: center;
+  }
+  
+  .linktr__goal{
+    background-color: rgb(209, 246, 255);
+    color: rgb(8, 49, 112);
+    box-shadow: rgb(8 49 112 / 24%) 0px 2px 8px 0px;
+    border-radius: 2rem;
+    padding: .5rem 1.25rem;
+  }
+  
+  @media (min-width: 1024px){
+    
+    .linktr{
+      position: absolute; 
+      right: 1rem; 
+      bottom: 1rem;
+    }
+  }
+  
+  .r-link{
+      --uirLinkDisplay: var(--rLinkDisplay, inline-flex);
+      --uirLinkTextColor: var(--rLinkTextColor);
+      --uirLinkTextDecoration: var(--rLinkTextDecoration, none);
+  
+      display: var(--uirLinkDisplay) !important;
+      color: var(--uirLinkTextColor) !important;
+      text-decoration: var(--uirLinkTextDecoration) !important;
+  }
+  
+
+/* */
+:root {  
+    --purple: rgb(123, 31, 162);
+    --violet: rgb(250, 204, 21);
+    --pink: rgb(244, 143, 177);
+  }
+  
+  @keyframes background-pan {
+    from {
+      background-position: 0% center;
+    }
+    
+    to {
+      background-position: -200% center;
+    }
+  }
+  
+  @keyframes scale {
+    from, to {
+      transform: scale(0);
+    }
+    
+    50% {
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    
+    to {
+      transform: rotate(180deg);
+    }
+  }
+  
+  body {
+    display: grid;
+    height: 100vh;
+    margin: 0px;
+    overflow: hidden;
+    place-items: center;
+  }
+  
+  h1 {
+    
+  }
+  
+  .magic {
+    display: inline-block;
+    position: relative;
+    color: white;
+    font-family: "Rubik", sans-serif;
+    font-size: clamp(2em, 2vw, 4em);
+    font-weight: 400;
+    margin: 0px;
+    text-align: center;
+    width:90%;
+  }
+  
+  .magic > .magic-star {
+    --size: clamp(20px, 1.5vw, 30px);
+    
+    animation: scale 700ms ease forwards;
+    display: block;
+    height: var(--size);
+    left: var(--star-left);
+    position: absolute;
+    top: var(--star-top);
+    width: var(--size);
+  }
+  
+  .magic > .magic-star > svg {
+    animation: rotate 1000ms linear infinite;
+    display: block;
+    opacity: 0.7;
+  }
+  
+   .magic > .magic-star > svg > path {
+    fill: var(--violet);
+  }
+  
+   .magic > .magic-text {
+    animation: background-pan 3s linear infinite;
+    background: linear-gradient(
+      to right,
+      var(--purple),
+      var(--violet),
+      var(--pink),
+      var(--purple)
+    );
+    background-size: 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    white-space: nowrap;
+  }
+  
+  /* -- YouTube Link Styles -- */
+  
+  #source-link {
+    top: 60px;
+  }
+  
+  #source-link > i {
+    color: rgb(94, 106, 210);
+  }
+  
+  #yt-link {  
+    top: 10px;
+  }
+  
+  #yt-link > i {
+    color: rgb(239, 83, 80);
+  }
+  
+  .meta-link {
+    align-items: center;
+    backdrop-filter: blur(3px);
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+    cursor: pointer;  
+    display: inline-flex;
+    gap: 5px;
+    left: 10px;
+    padding: 10px 20px;
+    position: fixed;
+    text-decoration: none;
+    transition: background-color 600ms, border-color 600ms;
+    z-index: 10000;
+  }
+  
+  .meta-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .meta-link > i, .meta-link > span {
+    height: 20px;
+    line-height: 20px;
+  }
+  
+  .meta-link > span {
+    color: white;
+    font-family: "Rubik", sans-serif;
+    transition: color 600ms;
+  }
+
+  /* 3 */
+  
+  @-moz-keyframes borboletas-pos-loop {
+    0% {
+      -moz-transform: translate(0, 0);
+      transform: translate(0, 0);
+    }
+    25% {
+      -moz-transform: translate(160px, 0);
+      transform: translate(160px, 0);
+    }
+    50% {
+      -moz-transform: translate(30px, -40px);
+      transform: translate(30px, -40px);
+    }
+    75% {
+      -moz-transform: translate(0px, 12px);
+      transform: translate(0px, 12px);
+    }
+    100% {
+      -moz-transform: translate(-160px, -29px);
+      transform: translate(-160px, -29px);
+    }
+  }
+  @-webkit-keyframes borboletas-pos-loop {
+    0% {
+      -webkit-transform: translate(0, 0);
+      transform: translate(0, 0);
+    }
+    25% {
+      -webkit-transform: translate(144px, 0);
+      transform: translate(144px, 0);
+    }
+    50% {
+      -webkit-transform: translate(48px, -5px);
+      transform: translate(48px, -5px);
+    }
+    75% {
+      -webkit-transform: translate(0px, 6px);
+      transform: translate(0px, 6px);
+    }
+    100% {
+      -webkit-transform: translate(-127px, -9px);
+      transform: translate(-127px, -9px);
+    }
+  }
+  @keyframes borboletas-pos-loop {
+    0% {
+      -moz-transform: translate(0, 0);
+      -ms-transform: translate(0, 0);
+      -webkit-transform: translate(0, 0);
+      transform: translate(0, 0);
+    }
+    25% {
+      -moz-transform: translate(144px, 0);
+      -ms-transform: translate(144px, 0);
+      -webkit-transform: translate(144px, 0);
+      transform: translate(144px, 0);
+    }
+    50% {
+      -moz-transform: translate(48px, -5px);
+      -ms-transform: translate(48px, -5px);
+      -webkit-transform: translate(48px, -5px);
+      transform: translate(48px, -5px);
+    }
+    75% {
+      -moz-transform: translate(0px, 6px);
+      -ms-transform: translate(0px, 6px);
+      -webkit-transform: translate(0px, 6px);
+      transform: translate(0px, 6px);
+    }
+    100% {
+      -moz-transform: translate(-127px, -9px);
+      -ms-transform: translate(-127px, -9px);
+      -webkit-transform: translate(-127px, -9px);
+      transform: translate(-127px, -9px);
+    }
+  }
+  .borboletas {
+    position: absolute;
+    left: 49%;
+    bottom: 50%;
+    -moz-animation: borboletas-pos-loop 7s ease-in-out infinite alternate-reverse;
+    -webkit-animation: borboletas-pos-loop 7s ease-in-out infinite alternate-reverse;
+    animation: borboletas-pos-loop 7s ease-in-out infinite alternate-reverse;
+  }
+  
+  .borboleta-oval-squish {
+    -moz-transform: scale(0.3, 1);
+    -ms-transform: scale(0.3, 1);
+    -webkit-transform: scale(0.3, 1);
+    transform: scale(0.3, 1);
+  }
+  
+  @-moz-keyframes borboleta-radial-loop {
+    0% {
+      -moz-transform: rotate(0);
+      transform: rotate(0);
+    }
+    100% {
+      -moz-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes borboleta-radial-loop {
+    0% {
+      -webkit-transform: rotate(0);
+      transform: rotate(0);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes borboleta-radial-loop {
+    0% {
+      -moz-transform: rotate(0);
+      -ms-transform: rotate(0);
+      -webkit-transform: rotate(0);
+      transform: rotate(0);
+    }
+    100% {
+      -moz-transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+  .borboleta-1 {
+    -moz-animation: borboleta-radial-loop 5s linear infinite;
+    -webkit-animation: borboleta-radial-loop 5s linear infinite;
+    animation: borboleta-radial-loop 5s linear infinite;
+  }
+  
+  .borboleta-2 {
+    -moz-animation: borboleta-radial-loop 15s linear infinite;
+    -webkit-animation: borboleta-radial-loop 15s linear infinite;
+    animation: borboleta-radial-loop 15s linear infinite;
+  }
+  
+  @-moz-keyframes borboleta-oval-loop {
+    0% {
+      -moz-transform: rotate(0) scale(3.3, 1);
+      transform: rotate(0) scale(3.3, 1);
+    }
+    100% {
+      -moz-transform: rotate(-360deg) scale(3.3, 1);
+      transform: rotate(-360deg) scale(3.3, 1);
+    }
+  }
+  @-webkit-keyframes borboleta-oval-loop {
+    0% {
+      -webkit-transform: rotate(0) scale(3.3, 1);
+      transform: rotate(0) scale(3.3, 1);
+    }
+    100% {
+      -webkit-transform: rotate(-360deg) scale(3.3, 1);
+      transform: rotate(-360deg) scale(3.3, 1);
+    }
+  }
+  @keyframes borboleta-oval-loop {
+    0% {
+      -moz-transform: rotate(0) scale(3.3, 1);
+      -ms-transform: rotate(0) scale(3.3, 1);
+      -webkit-transform: rotate(0) scale(3.3, 1);
+      transform: rotate(0) scale(3.3, 1);
+    }
+    100% {
+      -moz-transform: rotate(-360deg) scale(3.3, 1);
+      -ms-transform: rotate(-360deg) scale(3.3, 1);
+      -webkit-transform: rotate(-360deg) scale(3.3, 1);
+      transform: rotate(-360deg) scale(3.3, 1);
+    }
+  }
+  .borboleta-oval {
+    position: absolute;
+    -moz-animation: borboleta-radial-loop 1.2s linear infinite;
+    -webkit-animation: borboleta-radial-loop 1.2s linear infinite;
+    animation: borboleta-radial-loop 1.2s linear infinite;
+  }
+  
+  .borboleta-radial {
+    position: absolute;
+    left: 5px;
+    top: 0;
+    -moz-animation: borboleta-oval-loop 1.2s linear infinite;
+    -webkit-animation: borboleta-oval-loop 1.2s linear infinite;
+    animation: borboleta-oval-loop 1.2s linear infinite;
+  }
+  
+  .borboleta-2 .borboleta-oval {
+    -moz-animation: borboleta-radial-loop 1.5s linear infinite;
+    -webkit-animation: borboleta-radial-loop 1.5s linear infinite;
+    animation: borboleta-radial-loop 1.5s linear infinite;
+  }
+  
+  .borboleta-2 .borboleta-radial {
+    -moz-animation: borboleta-oval-loop 1.5s linear infinite;
+    -webkit-animation: borboleta-oval-loop 1.5s linear infinite;
+    animation: borboleta-oval-loop 1.5s linear infinite;
+  }
+  
+  .borboleta-gfx {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 105px;
+    height: 105px;
+  }
+  
+  @-moz-keyframes borboleta-gfx-upright-loop {
+    0% {
+      -moz-transform: rotate(0);
+      transform: rotate(0);
+    }
+    100% {
+      -moz-transform: rotate(-360deg);
+      transform: rotate(-360deg);
+    }
+  }
+  @-webkit-keyframes borboleta-gfx-upright-loop {
+    0% {
+      -webkit-transform: rotate(0);
+      transform: rotate(0);
+    }
+    100% {
+      -webkit-transform: rotate(-360deg);
+      transform: rotate(-360deg);
+    }
+  }
+  @keyframes borboleta-gfx-upright-loop {
+    /*0% {
+      -moz-transform: rotate(0);
+      -ms-transform: rotate(0);
+      -webkit-transform: rotate(0);
+      transform: rotate(0);
+    }
+    100% {
+      -moz-transform: rotate(-360deg);
+      -ms-transform: rotate(-360deg);
+      -webkit-transform: rotate(-360deg);
+      transform: rotate(-360deg);
+    }*/
+  }
+  .borboleta-1 .borboleta-gfx {
+    -moz-animation: borboleta-gfx-upright-loop 10s linear infinite;
+    -webkit-animation: borboleta-gfx-upright-loop 10s linear infinite;
+    animation: borboleta-gfx-upright-loop 10s linear infinite;
+  }
+  
+  .borboleta-2 .borboleta-gfx {
+    -moz-animation: borboleta-gfx-upright-loop 15s linear infinite;
+    -webkit-animation: borboleta-gfx-upright-loop 15s linear infinite;
+    animation: borboleta-gfx-upright-loop 15s linear infinite;
+  }
+  
+  @-moz-keyframes borboleta-anim-loop {
+    0% {
+      -moz-transform: scale(1, 1.2) rotate(40deg);
+      transform: scale(1, 1.2) rotate(40deg);
+    }
+    100% {
+      -moz-transform: scale(0.7, -1) rotate(-40deg);
+      transform: scale(0.7, -1) rotate(-40deg);
+    }
+  }
+  @-webkit-keyframes borboleta-anim-loop {
+    0% {
+      -webkit-transform: scale(1, 1.2) rotate(40deg);
+      transform: scale(1, 1.2) rotate(40deg);
+    }
+    100% {
+      -webkit-transform: scale(0.7, -1) rotate(-40deg);
+      transform: scale(0.7, -1) rotate(-40deg);
+    }
+  }
+  @keyframes borboleta-anim-loop {
+    0% {
+      -moz-transform: scale(1, 1.2) rotate(40deg);
+      -ms-transform: scale(1, 1.2) rotate(40deg);
+      -webkit-transform: scale(1, 1.2) rotate(40deg);
+      transform: scale(1, 1.2) rotate(40deg);
+    }
+    100% {
+      -moz-transform: scale(0.7, -1) rotate(-40deg);
+      -ms-transform: scale(0.7, -1) rotate(-40deg);
+      -webkit-transform: scale(0.7, -1) rotate(-40deg);
+      transform: scale(0.7, -1) rotate(-40deg);
+    }
+  }
+  .borboleta-anim {
+    background: radial-gradient(closest-side at 50% 50%, #101010 50%, rgba(255, 255, 255, 0) 50%), radial-gradient(closest-side at 50% 50%, #101010 50%, rgba(255, 255, 255, 0) 50%);
+    background-repeat: no-repeat;
+    background-size: 90% 70%,100% 70%;
+    background-position: 20% -40%,0 40%;
+    width: 25px;
+    height: 20px;
+    -moz-animation: borboleta-anim-loop 150ms ease-in-out infinite alternate-reverse;
+    -webkit-animation: borboleta-anim-loop 150ms ease-in-out infinite alternate-reverse;
+    animation: borboleta-anim-loop 150ms ease-in-out infinite alternate-reverse;
+  }
